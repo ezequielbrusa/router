@@ -1,6 +1,6 @@
 <?php
 
-use Garcia\Router;
+use Garcia\Garcia\Router;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase

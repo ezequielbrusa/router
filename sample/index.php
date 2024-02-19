@@ -1,20 +1,6 @@
-# Router
-A simple router for PHP, inspired by Express.js and Laravel.
-
-## Description
-This is a simple router. It is a simple router that uses the `window.location` object to determine the current route and render the appropriate component.
-
-## Installation
-```bash
-composer require josegarcia/router
-```
-
-## Usage
-
-```php
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use Garcia\Router;
 
@@ -43,7 +29,3 @@ Router::get('/view', fn () => [
 Router::get('/redirect', fn () => redirect('http://www.example.com'));
 
 Router::run();
-```
-
-## License
-MIT
