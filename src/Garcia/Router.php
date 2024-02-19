@@ -2,6 +2,8 @@
 
 namespace Garcia;
 
+use Garcia\Exceptions\RouterException;
+
 class Router
 {
     /**
@@ -121,6 +123,7 @@ class Router
      * @param string $method - HTTP method
      * @param string $uri - URI path
      * @return void
+     * @throws RouterException - Invalid handler
      */
     public static function handleRequest(string $method, string $uri)
     {
@@ -176,6 +179,7 @@ class Router
      * @param callable $handler - Route handler
      * @param array $params - Route parameters
      * @return void
+     * @throws RouterException - Invalid handler
      */
     private static function callHandler(callable $handler, array $params = [])
     {
@@ -201,7 +205,7 @@ class Router
             }
         } else {
             // Handle error: invalid handler
-            echo "Error: Invalid handler!";
+            throw new RouterException('Invalid handler');
         }
     }
 
@@ -220,6 +224,7 @@ class Router
      * Runs the router.
      *
      * @return void
+     * @throws RouterException - Invalid handler
      */
     public static function run()
     {
