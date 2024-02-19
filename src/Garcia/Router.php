@@ -229,4 +229,14 @@ class Router
         // Handle the request
         self::handleRequest($method, $uri);
     }
+
+    /**
+     * Returns the array of routes.
+     *
+     * @return array - Array of routes
+     */
+    public static function getRoutes(): array
+    {
+        return self::$routes;
+    }
 }

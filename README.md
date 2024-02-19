@@ -1,8 +1,8 @@
 # Router
-A simple router for PHP, inspired by Express.js and Laravel.
+A simple router for PHP, inspired by Express and Laravel.
 
 ## Description
-This is a simple router. It is a simple router that uses the `window.location` object to determine the current route and render the appropriate component.
+This is a simple router for PHP, inspired by Express and Laravel. It allows you to define routes and their handlers, and then run the router to match the current request and execute the corresponding handler.
 
 ## Installation
 ```bash
@@ -45,5 +45,43 @@ Router::get('/redirect', fn () => redirect('http://www.example.com'));
 Router::run();
 ```
 
+## API
+the router has the following methods:
+get, post, put, patch, delete, options, head, any, addRoute, run, redirect, view, json, and render.
+
+### get, post, put, patch, delete, options, head, any
+These methods are used to define routes. They take two parameters: the route and the handler. The route can contain parameters, which are defined by a colon followed by the parameter name. The handler can be a function or a string. If it is a string, it is assumed to be the name of a function to be called.
+
+### addRoute
+This method is used to define routes. It takes three parameters: the method, the route, and the handler. The route can contain parameters, which are defined by a colon followed by the parameter name. The handler can be a function or a string. If it is a string, it is assumed to be the name of a function to be called.
+
+### run
+This method is used to run the router. It takes no parameters.
+
+### redirect
+This method is used to redirect to another URL. It takes one parameter: the URL to redirect to.
+
+### view
+This method is used to render a view. It takes one parameter: the name of the view to render.
+
+### json
+This method is used to return a JSON response. It takes one parameter: the data to be returned as JSON.
+
+### render
+This method is used to render a view. It takes one parameter: the name of the view to render.
+
+## Examples
+You can find more examples in the [examples](examples) directory.
+
+## Tests
+You can run the tests with the following command:
+```bash
+composer test
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
 ## License
-MIT
+[MIT](LICENSE)
+```

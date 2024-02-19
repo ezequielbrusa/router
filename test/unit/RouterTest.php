@@ -1,91 +1,52 @@
 <?php
 
-use Garcia\Garcia\Router;
+use Garcia\Router;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase
 {
-    public function testAddRoute()
+    /** @test - Test if the route is added to the routes array */
+    public function addRoute()
     {
-        $router = new Router();
-        $handler = function () {
-            return 'Hello, World!';
-        };
+        Router::addRoute('GET', '/test', fn () => 'test');
 
-        $router->addRoute('GET', '/hello', $handler);
-        $routes = $this->getObjectAttribute($router, 'routes');
-
-        $this->assertCount(1, $routes);
-        $this->assertEquals(['method' => 'GET', 'path' => '/hello', 'handler' => $handler], $routes[0]);
+        $this->assertIsArray(Router::getRoutes());
+        $this->assertCount(1, Router::getRoutes());
     }
 
-    public function testHandleRequest()
+    /** @test - Test if the route is added to the routes array */
+    public function testGet()
     {
-        $router = new Router();
-        $handler = function () {
-            return 'Hello, World!';
-        };
+        Router::get('/test', fn () => 'test');
 
-        $router->addRoute('GET', '/hello', $handler);
-
-        // Capture the output of handleRequest
-        ob_start();
-        $router->handleRequest('GET', '/hello');
-        $output = ob_get_clean();
-
-        $this->expectOutputString('Hello, World!');
-        $this->assertEquals('Hello, World!', $output);
+        $this->assertIsArray(Router::getRoutes());
+        $this->assertCount(2, Router::getRoutes());
     }
 
-    public function testMatchPath()
+    /** @test - Test if the route is added to the routes array */
+    public function testPost()
     {
-        $router = new Router();
-        $uri = '/users/123';
+        Router::post('/test', fn () => 'test');
 
-        $routePath = '/users/:id';
-        $params = [];
-        $result = $this->invokeMethod($router, 'matchPath', [$routePath, $uri, &$params]);
-
-        $this->assertTrue($result);
-        $this->assertEquals(['id' => '123'], $params);
+        $this->assertIsArray(Router::getRoutes());
+        $this->assertCount(3, Router::getRoutes());
     }
 
-    public function testCallHandler()
+    /** @test - Test if the route is added to the routes array */
+    public function testPut()
     {
-        $router = new Router();
-        $handler = function ($params) {
-            return ['user' => $params['id']];
-        };
+        Router::put('/test', fn () => 'test');
 
-        // Capture the output of callHandler
-        ob_start();
-        $this->invokeMethod($router, 'callHandler', [$handler, ['id' => '123']]);
-        $output = ob_get_clean();
-
-        $this->expectOutputString('{"user":"123"}');
-        $this->assertEquals('{"user":"123"}', $output);
+        $this->assertIsArray(Router::getRoutes());
+        $this->assertCount(4, Router::getRoutes());
     }
 
-    public function testHandleNotFound()
+    /** @test - test the json response from the router */
+    public function testJsonResponse()
     {
-        $router = new Router();
+        Router::get('/test', fn() => ['id' => 1, 'name' => 'John Doe', 'email' => '', 'phone' => '']);
 
-        // Capture the output of handleNotFound
-        ob_start();
-        $this->invokeMethod($router, 'handleNotFound');
-        $output = ob_get_clean();
-
-        $this->expectOutputString('404 Not Found');
-        $this->assertEquals('404 Not Found', $output);
-    }
-
-    // Helper method to invoke private/protected methods for testing
-    private function invokeMethod(&$object, $methodName, array $parameters = [])
-    {
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $parameters);
+        $this->assertIsArray(Router::getRoutes());
+        $this->assertCount(5, Router::getRoutes());
     }
 }

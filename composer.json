@@ -26,7 +26,7 @@
     "friendsofphp/php-cs-fixer": "dev-master"
   },
     "scripts": {
-        "test": "phpunit --bootstrap vendor/autoload.php test/Express/RouterTest.php",
+        "test": "phpunit --bootstrap vendor/autoload.php test/unit/RouterTest.php",
         "fix": "php-cs-fixer fix src/ --rules=@PSR2"
     }
 }

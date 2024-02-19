@@ -22,13 +22,7 @@ function redirect(string $path)
  */
 function view(string $string, $element, string $path = 'views')
 {
-    if (is_array($element)) {
-        extract($element);
-    } else {
-        // Convert the object to an array
-        $array = json_decode(json_encode($element), true);
-        extract($array);
-    }
-
+    $array = is_array($element) ? $element : json_decode(json_encode($element), true);
+    extract($array);
     include $path . DIRECTORY_SEPARATOR . "{$string}.php";
 }
