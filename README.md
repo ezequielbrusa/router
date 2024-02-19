@@ -14,7 +14,7 @@ composer require valkyrae/router
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-use JoseGarcia\valkyrae\Router;
+use Garcia\valkyrae\Router;
 
 // Example usage
 $router = new Router();

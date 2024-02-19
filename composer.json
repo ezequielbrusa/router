@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "JoseGarcia\\Express\\": "src/Valkyrae/"
+      "Garcia\\Valkyrae\\": "src/Valkyrae/"
     }
   },
   "require-dev": {

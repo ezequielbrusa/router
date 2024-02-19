@@ -1,6 +1,6 @@
 <?php
 
-namespace JoseGarcia\valkyrae;
+namespace Garcia\Valkyrae;
 
 class Router
 {
