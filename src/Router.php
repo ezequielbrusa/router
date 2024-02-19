@@ -69,7 +69,7 @@ class Router
 
         $params = [];
         foreach ($routePathSegments as $key => $segment) {
-            if (str_starts_with($segment, ':')) {
+            if (strpos($segment, ':') === 0) {
                 // This is a parameter
                 $params[substr($segment, 1)] = $uriSegments[$key];
             } elseif ($segment !== $uriSegments[$key]) {
