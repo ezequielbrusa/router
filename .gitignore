@@ -1,0 +1,4 @@
+.php-cs-fixer.cache
+vendor
+psalm.xml
+.idea
