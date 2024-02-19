@@ -1,6 +1,6 @@
 <?php
 
-use JoseGarcia\Express\Router;
+use Garcia\Router;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase
