@@ -71,7 +71,7 @@ This method is used to return a JSON response. It takes one parameter: the data 
 This method is used to render a view. It takes one parameter: the name of the view to render.
 
 ## Examples
-You can find more examples in the [examples](examples) directory.
+You can find more examples in the [examples](sample) directory.
 
 ## Tests
 You can run the tests with the following command:
