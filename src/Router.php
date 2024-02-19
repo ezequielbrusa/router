@@ -1,6 +1,6 @@
 <?php
 
-namespace Garcia\Valkyrae;
+namespace Garcia;
 
 class Router
 {

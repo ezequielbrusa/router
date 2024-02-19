@@ -1,4 +1,4 @@
-# Valkyrae Router
+# Router
 A simple router for PHP, inspired by Express.js and Laravel.
 
 ## Description
@@ -6,15 +6,17 @@ This is a simple router. It is a simple router that uses the `window.location` o
 
 ## Installation
 ```bash
-composer require valkyrae/router
+composer require josegarcia/router
 ```
 
 ## Usage
+
 ```php
 <?php
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Garcia\valkyrae\Router;
+use Garcia\Router;
 
 // Example usage
 $router = new Router();
