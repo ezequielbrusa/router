@@ -3,6 +3,7 @@
 require_once '../vendor/autoload.php';
 
 use Garcia\Router;
+use Garcia\Exceptions\RouterException;
 
 // Example of a simple route
 Router::addRoute('GET', '/health', fn () => 'Hello, world!');
@@ -11,7 +12,11 @@ Router::addRoute('GET', '/health', fn () => 'Hello, world!');
 Router::addRoute('GET', '/health/:id', fn ($params) => "User ID: {$params['id']}");
 
 // Example of a route that returns a JSON response
-Router::get( '/api/health/:id', fn ($params) => ['id' => $params['id'], 'name' => 'John Doe', 'email' => 'john@example.com']);
+Router::get('/api/health/:id', fn ($params) => [
+    'id' => $params['id'],
+    'name' => 'John Doe',
+    'email' => 'john@example.com'
+]);
 
 // Example of rendering a view
 Router::get('/view', fn () => [
@@ -26,6 +31,10 @@ Router::get('/view', fn () => [
 ]);
 
 // Example of rendering
-Router::get('/redirect', fn () => redirect('http://www.example.com'));
+Router::get('/redirect', fn () => redirect('https://www.example.com'));
 
-Router::run();
+try {
+    Router::run();
+} catch (RouterException $e) {
+    echo $e->getMessage();
+}

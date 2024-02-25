@@ -1,5 +1,7 @@
 <?php
 
+namespace Test\Unit;
+
 use Garcia\Router;
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +46,7 @@ class RouterTest extends TestCase
     /** @test - test the json response from the router */
     public function testJsonResponse()
     {
-        Router::get('/test', fn() => ['id' => 1, 'name' => 'John Doe', 'email' => '', 'phone' => '']);
+        Router::get('/test', fn () => ['id' => 1, 'name' => 'John Doe', 'email' => '', 'phone' => '']);
 
         $this->assertIsArray(Router::getRoutes());
         $this->assertCount(5, Router::getRoutes());
