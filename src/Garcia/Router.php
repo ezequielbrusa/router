@@ -131,6 +131,13 @@ class Router
         $params = [];
         foreach (self::$routes as $route) {
             if ($route['method'] === $method && self::matchPath($route['path'], $uri, $params)) {
+                if ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
+                    // Capture the POST data
+                    $json = file_get_contents('php://input');
+                    $_REQUEST = json_decode($json, true);
+                    $_POST = $_REQUEST;
+                    $params = array_merge($params, $_REQUEST);
+                }
                 self::callHandler($route['handler'], $params);
                 $found = true;
             }

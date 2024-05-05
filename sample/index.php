@@ -30,6 +30,8 @@ Router::get('/view', fn () => [
     ]
 ]);
 
+Router::post('/health', fn ($params) => "Hello, {$params['name']} {$params['last']}!");
+
 // Example of rendering
 Router::get('/redirect', fn () => redirect('https://www.example.com'));
 
