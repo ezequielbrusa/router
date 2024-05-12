@@ -134,7 +134,7 @@ class Router
                 if ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
                     // Capture the POST data
                     $json = file_get_contents('php://input');
-                    $_REQUEST = json_decode($json, true);
+                    $_REQUEST = [...$_REQUEST, ...json_decode($json, true)];
                     $_POST = $_REQUEST;
                     $params = array_merge($params, $_REQUEST);
                 }
