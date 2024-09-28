@@ -136,8 +136,6 @@ class Router
                     $json = file_get_contents('php://input');
                     $_REQUEST = [...$_REQUEST, ...json_decode($json, true)];
                     $_POST = $_REQUEST;
-                    $_PUT = $_REQUEST;
-                    $_PATCH = $_REQUEST;
                     $params = array_merge($params, !empty($_REQUEST) ? $_REQUEST : []);
                 }
                 self::callHandler($route['handler'], $params);
