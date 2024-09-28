@@ -134,9 +134,11 @@ class Router
                 if ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
                     // Capture the POST data
                     $json = file_get_contents('php://input');
-                    $_REQUEST = [...$_REQUEST, ...json_decode($json, true)];
+                    $body = json_decode($json, true);
+                    $array = !empty($body) ? $body : [];
+                    $_REQUEST = [...$_REQUEST, ...$array];
                     $_POST = $_REQUEST;
-                    $params = array_merge($params, $_REQUEST);
+                    $params = array_merge($params, $_POST);
                 }
                 self::callHandler($route['handler'], $params);
                 $found = true;
