@@ -198,7 +198,7 @@ class Router
             ob_start();
             echo json_encode(call_user_func($handler, $params));
             $output = json_decode(ob_get_clean());
-
+            http_response_code(200);
             if (is_array($output) || is_object($output)) {
                 if (property_exists($output, 'view')) {
                     // If the output is a view, render the view
