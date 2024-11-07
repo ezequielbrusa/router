@@ -44,6 +44,27 @@ Router::post('/health', fn ($params) => "Hello, {$params['name']} {$params['last
 // Example of rendering
 Router::get('/redirect', fn () => redirect('http://www.example.com'));
 
+// Example of using the resource method
+class Test {
+    public function index(){
+        return ['Hello' => 'index'];
+    }
+    public function store(){
+        return ['Hello' => 'store'];
+    }
+    public function show(){
+        return ['Hello' => 'show'];
+    }
+    public function update($params){
+        return ['Hello' => "update".$params['id']];
+    }
+    public function destroy(){
+        return ['Hello' => 'destroy'];
+    }
+}
+
+Router::resource('/test', Test::class); 
+
 Router::run();
 ```
 
@@ -71,6 +92,10 @@ This method is used to return a JSON response. It takes one parameter: the data 
 
 ### render
 This method is used to render a view. It takes one parameter: the name of the view to render.
+
+### resource
+This method sets multiple routes such a Get, Post, Patch, Put, Delete and sets the corresponding callbacks.
+Based on restful controllers.
 
 ## Examples
 You can find more examples in the [examples](sample) directory.

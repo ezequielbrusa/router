@@ -5,6 +5,24 @@ namespace Test\Unit;
 use Garcia\Router;
 use PHPUnit\Framework\TestCase;
 
+class Test {
+    public function index(){
+        return ['Hello' => 'index'];
+    }
+    public function store(){
+        return ['Hello' => 'store'];
+    }
+    public function show(){
+        return ['Hello' => 'show'];
+    }
+    public function update($params){
+        return ['Hello' => "update".$params['id']];
+    }
+    public function destroy(){
+        return ['Hello' => 'destroy'];
+    }
+}
+
 class RouterTest extends TestCase
 {
     /** @test - Test if the route is added to the routes array */
@@ -51,4 +69,13 @@ class RouterTest extends TestCase
         $this->assertIsArray(Router::getRoutes());
         $this->assertCount(5, Router::getRoutes());
     }
+
+     /** @test - Test if the route is added to the routes array */
+     public function addResource()
+     { 
+         Router::resource('/tests', Test::class);
+         $this->assertIsArray(Router::getRoutes());
+         $this->assertCount(11, Router::getRoutes());
+     }
 }
+
