@@ -4,7 +4,8 @@ namespace Garcia;
 
 use Garcia\Exceptions\RouterException;
 
-class Router
+class 
+Router
 {
     /**
      * @var array - Array of routes
@@ -27,7 +28,19 @@ class Router
             'handler' => $handler
         ];
     }
-
+   
+    
+    public static function resource(string $path, string $className)
+    {
+        self::addRoute('GET', $path, fn () => (new $className)->index());
+        self::addRoute('POST', $path, fn () => (new $className)->store());     
+        self::addRoute('GET', "$path/:id", fn ($params) => (new $className)->show($params));
+        self::addRoute('PATCH', "$path/:id", fn ($params) => (new $className)->update($params));
+        self::addRoute('PUT', "$path/:id", fn ($params) => (new $className)->update($params));
+        self::addRoute('DELETE', "$path/:id", fn ($params) => (new $className)->destroy($params));
+    }
+    
+    
     /**
      * Sets a new route for GET requests.
      *
