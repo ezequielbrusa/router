@@ -4,8 +4,7 @@ namespace Garcia;
 
 use Garcia\Exceptions\RouterException;
 
-class 
-Router
+class Router
 {
     /**
      * @var array - Array of routes
@@ -28,8 +27,14 @@ Router
             'handler' => $handler
         ];
     }
-   
-    
+
+   /**
+    * This method sets multiple routes such a Get, Post, Patch, Put, Delete and sets the corresponding callbacks
+    * Based on restful controllers.
+    *
+    * @param string $path - URL path 
+    * @param string $className - This is the name of the class that we use instantiate callbacks
+    */
     public static function resource(string $path, string $className)
     {
         self::addRoute('GET', $path, fn () => (new $className)->index());
@@ -39,8 +44,7 @@ Router
         self::addRoute('PUT', "$path/:id", fn ($params) => (new $className)->update($params));
         self::addRoute('DELETE', "$path/:id", fn ($params) => (new $className)->destroy($params));
     }
-    
-    
+     
     /**
      * Sets a new route for GET requests.
      *
