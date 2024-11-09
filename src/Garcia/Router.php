@@ -38,7 +38,8 @@ class Router
     public static function resource(string $path, string $className)
     {
         self::addRoute('GET', $path, fn () => (new $className)->index());
-        self::addRoute('POST', $path, fn () => (new $className)->store());     
+        //self::addRoute('POST', $path, fn () => (new $className)->store());  
+        self::addRoute('POST', $path, fn ($params) => (new $className)->store($params));
         self::addRoute('GET', "$path/:id", fn ($params) => (new $className)->show($params));
         self::addRoute('PATCH', "$path/:id", fn ($params) => (new $className)->update($params));
         self::addRoute('PUT', "$path/:id", fn ($params) => (new $className)->update($params));
