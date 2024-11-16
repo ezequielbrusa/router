@@ -24,7 +24,8 @@ class Router
         self::$routes[] = [
             'method' => $method,
             'path' => $path,
-            'handler' => $handler
+            'handler' => $handler,
+            'middleware' => []
         ];
     }
 
