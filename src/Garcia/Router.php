@@ -29,6 +29,60 @@ class Router
         ];
     }
 
+    public function middleware(callable $middleware)
+    {
+        $lastRouteIndex = count(self::$routes) - 1;
+        if ($lastRouteIndex >= 0) {
+            self::$routes[$lastRouteIndex]['middleware'][] = $middleware;
+        }
+        return $this;
+    }
+ 
+    private static function matchRoute($route, $uri, &$params)
+    {
+        $pattern = preg_replace('/:\w+/', '(\w+)', $route);
+        $pattern = str_replace('/', '\/', $pattern);
+        if (preg_match('/^' . $pattern . '$/', $uri, $matches)) {
+            array_shift($matches); // Remove the full match
+            $paramNames = [];
+            preg_match_all('/:(\w+)/', $route, $paramNames);
+            $params = array_combine($paramNames[1], $matches);
+            return true;
+        }
+        return false;
+    }
+
+    // public static function run()
+    // {
+    //     $method = $_SERVER['REQUEST_METHOD'];
+    //     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+    //     foreach (self::$routes as $route) {
+    //         if ($method === $route['method'] && self::matchRoute($route['path'], $uri, $params)) {
+    //             // Execute middlewares
+    //             $handler = $route['handler'];
+    //             $middlewares = $route['middleware'];
+    //             $middlewareChain = function ($index) use (&$middlewareChain, $middlewares, $handler, $params) {
+    //                 if ($index < count($middlewares)) {
+    //                     return $middlewares[$index]($params, function ($params) use ($middlewareChain, $index) {
+    //                         return $middlewareChain($index + 1);
+    //                     });
+    //                 }
+    //                 // Execute final route handler after all middlewares
+    //                 return $handler($params);
+    //             };
+
+    //             //echo $middlewareChain(0);
+    //             return;
+    //         }
+    //     }
+        
+
+    //     // 404 Not Found
+    //     http_response_code(404);
+    //     echo json_encode(['error' => 'Route not found']);
+    // }
+
    /**
     * This method sets multiple routes such a Get, Post, Patch, Put, Delete and sets the corresponding callbacks
     * Based on restful controllers.
@@ -255,11 +309,24 @@ class Router
      */
     public static function run()
     {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $uri = $_SERVER['REQUEST_URI'];
+       $method = $_SERVER['REQUEST_METHOD'];
+       $uri = $_SERVER['REQUEST_URI'];
 
-        // Handle the request
-        self::handleRequest($method, $uri);
+       self::handleMiddleware($method, $uri);
+
+       // Handle the request
+       self::handleRequest($method, $uri);
+    }
+
+    public static function handleMiddleware(string $method, string $uri)
+    {
+        $found = false;
+        $params = [];
+        foreach (self::$routes as $route) {
+            if ($route['method'] === $method && self::matchPath($route['path'], $uri, $params)) { //&& does it have a middleware?) {
+                // if it has a middleware then trigger all the middlewares assocaited to this route.
+            }
+        }
     }
 
     /**
