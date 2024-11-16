@@ -54,7 +54,7 @@ class Test {
     }
 }
 
-Router::resource('/test', Test::class); 
+Router::resource('/test', Test::class)->middleware(fn () => 'hello');
 
 try {
     Router::run();

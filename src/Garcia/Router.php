@@ -30,11 +30,20 @@ class Router
     }
 
     public function middleware(callable $middleware)
-    {
-        $lastRouteIndex = count(self::$routes) - 1;
-        if ($lastRouteIndex >= 0) {
-            self::$routes[$lastRouteIndex]['middleware'][] = $middleware;
+    { 
+        foreach(self::$routes as $idx => $route) {
+            if (isset(self::$routes[$idx])) {
+                self::$routes[$idx]['middleware'][] = $middleware;                
+            }
+            self::$routes[$idx]['middleware'][] = $middleware;
         }
+        // $lastRouteIndex = count(self::$routes) - 1;
+        // if ($lastRouteIndex >= 0) {
+        //     //$_SESSION[$lastRouteIndex]['middleware'][] = $middleware;
+        //     self::$routes[$lastRouteIndex]['middleware'][] = $middleware;
+        //     // self::$routes[$lastRouteIndex]['middleware'][] = $middleware;
+        //     // [$lastRouteIndex]['middleware'][] = $middleware;
+        // }
         return $this;
     }
  
@@ -98,6 +107,7 @@ class Router
         self::addRoute('PATCH', "$path/:id", fn ($params) => (new $className)->update($params));
         self::addRoute('PUT', "$path/:id", fn ($params) => (new $className)->update($params));
         self::addRoute('DELETE', "$path/:id", fn ($params) => (new $className)->destroy($params));
+        return new static;
     }
      
     /**
@@ -320,13 +330,16 @@ class Router
 
     public static function handleMiddleware(string $method, string $uri)
     {
-        $found = false;
         $params = [];
-        foreach (self::$routes as $route) {
-            if ($route['method'] === $method && self::matchPath($route['path'], $uri, $params)) { //&& does it have a middleware?) {
-                // if it has a middleware then trigger all the middlewares assocaited to this route.
-            }
-        }
+        foreach (self::$routes as $idx => $route) {
+            if ($route['method'] === $method && self::matchPath($route['path'], $uri, $params)) { 
+                 $middlewareCount = count(self::$routes[$idx]['middleware']) - 1;
+
+                 for ($x = 0; $x <= $middlewareCount; $x++) {
+                    self::$routes[$idx]['middleware'][$x]();
+                 }
+             }
+         }
     }
 
     /**
