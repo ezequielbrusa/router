@@ -64,12 +64,12 @@ class Router
      *
      * @param string $path - URL path
      * @param callable $handler - Route handler
-     * @return object
+     * @return void
      */
     public static function get(string $path, callable $handler)
     {
         self::addRoute('GET', $path, $handler);
-         return new static;
+        return new static;
     }
 
     /**
@@ -82,6 +82,7 @@ class Router
     public static function post(string $path, callable $handler)
     {
         self::addRoute('POST', $path, $handler);
+        return new static;
     }
 
     /**
@@ -94,6 +95,7 @@ class Router
     public static function put(string $path, callable $handler)
     {
         self::addRoute('PUT', $path, $handler);
+        return new static;
     }
 
     /**
@@ -105,7 +107,8 @@ class Router
      */
     public static function delete(string $path, callable $handler)
     {
-        self::addRoute('DELETE', $path, $handler);
+        self::addRoute('DELETE', $path, $handler); 
+        return new static;   
     }
 
     /**
@@ -118,6 +121,7 @@ class Router
     public static function patch(string $path, callable $handler)
     {
         self::addRoute('PATCH', $path, $handler);
+        return new static;
     }
 
     /**
@@ -130,6 +134,7 @@ class Router
     public static function options(string $path, callable $handler)
     {
         self::addRoute('OPTIONS', $path, $handler);
+        return new static;
     }
 
     /**
@@ -147,6 +152,7 @@ class Router
         self::addRoute('DELETE', $path, $handler);
         self::addRoute('PATCH', $path, $handler);
         self::addRoute('OPTIONS', $path, $handler);
+        return new static;
     }
 
     /**
