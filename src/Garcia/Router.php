@@ -69,7 +69,7 @@ class Router
     public static function get(string $path, callable $handler)
     {
         self::addRoute('GET', $path, $handler);
-         return new static;
+        return new static;
     }
 
     /**
@@ -82,6 +82,7 @@ class Router
     public static function post(string $path, callable $handler)
     {
         self::addRoute('POST', $path, $handler);
+        return new static;
     }
 
     /**
@@ -94,6 +95,7 @@ class Router
     public static function put(string $path, callable $handler)
     {
         self::addRoute('PUT', $path, $handler);
+        return new static;
     }
 
     /**
@@ -106,6 +108,8 @@ class Router
     public static function delete(string $path, callable $handler)
     {
         self::addRoute('DELETE', $path, $handler);
+        return new static;
+
     }
 
     /**
@@ -118,6 +122,8 @@ class Router
     public static function patch(string $path, callable $handler)
     {
         self::addRoute('PATCH', $path, $handler);
+        return new static;
+
     }
 
     /**
@@ -130,6 +136,8 @@ class Router
     public static function options(string $path, callable $handler)
     {
         self::addRoute('OPTIONS', $path, $handler);
+        return new static;
+
     }
 
     /**
@@ -147,6 +155,8 @@ class Router
         self::addRoute('DELETE', $path, $handler);
         self::addRoute('PATCH', $path, $handler);
         self::addRoute('OPTIONS', $path, $handler);
+        return new static;
+
     }
 
     /**
@@ -226,7 +236,7 @@ class Router
     {
         // Assuming handlers are callable, you might need to adjust based on your use case
         if (is_callable($handler)) {
-            // Capture the output of the handler function
+            // Capture the output of sthe handler function
             ob_start();
             echo json_encode(call_user_func($handler, $params));
             $output = json_decode(ob_get_clean());
