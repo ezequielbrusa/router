@@ -70,12 +70,12 @@ class RouterTest extends TestCase
         $this->assertCount(5, Router::getRoutes());
     }
 
-     /** @test - Test if the route is added to the routes array */
+    /** @test - Test if the route is added to the routes array */
      public function addResource()
+
      { 
          Router::resource('/tests', Test::class);
          $this->assertIsArray(Router::getRoutes());
          $this->assertCount(11, Router::getRoutes());
      }
-}
-
+ }
