@@ -1,8 +1,8 @@
 # Router
-A simple router for PHP, inspired by Express and Laravel.
+A lightweight routing tool for PHP, drawing inspiration from Express and Laravel.
 
 ## Description
-This is a simple router for PHP, inspired by Express and Laravel. It allows you to define routes and their handlers, and then run the router to match the current request and execute the corresponding handler.
+This router provides a straightforward way to define and manage routes in PHP. Inspired by frameworks like Express and Laravel, it lets you assign specific handlers to routes and then processes incoming requests by matching them to the appropriate handler.
 
 ## Installation
 ```bash
