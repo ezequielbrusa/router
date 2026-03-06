@@ -9,7 +9,7 @@
             <div class="main-wrapper">
                 <h1>Template</h1>
                 <div class="nav-login">
-                    <?= "Hello, $name!" ?>
+                    <?= "Hello, " . htmlspecialchars((string)$name, ENT_QUOTES, 'UTF-8') . "!" ?>
                 </div>
             </div>
         </nav>
