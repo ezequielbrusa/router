@@ -73,9 +73,69 @@ class RouterTest extends TestCase
     /** @test - Test if the route is added to the routes array */
      public function addResource()
 
-     { 
+     {
          Router::resource('/tests', Test::class);
          $this->assertIsArray(Router::getRoutes());
          $this->assertCount(11, Router::getRoutes());
      }
+
+    private function resetRoutes(): void
+    {
+        $ref = new \ReflectionProperty(Router::class, 'routes');
+        $ref->setAccessible(true);
+        $ref->setValue(null, []);
+    }
+
+    public function testCallHandlerWithArrayReturnProducesJson(): void
+    {
+        $this->resetRoutes();
+        Router::get('/api/test', fn () => ['key' => 'value']);
+
+        ob_start();
+        Router::handleRequest('GET', '/api/test');
+        $output = ob_get_clean();
+
+        $this->assertSame('{"key":"value"}', $output);
+    }
+
+    public function testCallHandlerWithObjectReturnProducesJson(): void
+    {
+        $this->resetRoutes();
+        $obj = new \stdClass();
+        $obj->name = 'test';
+        Router::get('/api/obj', fn () => $obj);
+
+        ob_start();
+        Router::handleRequest('GET', '/api/obj');
+        $output = ob_get_clean();
+
+        $this->assertSame('{"name":"test"}', $output);
+    }
+
+    public function testCallHandlerWithStringReturnEchoesDirectly(): void
+    {
+        $this->resetRoutes();
+        Router::get('/api/str', fn () => 'hello world');
+
+        ob_start();
+        Router::handleRequest('GET', '/api/str');
+        $output = ob_get_clean();
+
+        $this->assertSame('hello world', $output);
+    }
+
+    public function testCallHandlerSideEffectOutputIsDiscarded(): void
+    {
+        $this->resetRoutes();
+        Router::get('/api/warn', function () {
+            echo 'side-effect-output';
+            return ['status' => 'ok'];
+        });
+
+        ob_start();
+        Router::handleRequest('GET', '/api/warn');
+        $output = ob_get_clean();
+
+        $this->assertSame('{"status":"ok"}', $output);
+    }
  }
