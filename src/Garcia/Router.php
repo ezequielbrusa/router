@@ -232,23 +232,26 @@ class Router
     {
         // Assuming handlers are callable, you might need to adjust based on your use case
         if (is_callable($handler)) {
-            // Capture the output of sthe handler function
             ob_start();
-            echo json_encode(call_user_func($handler, $params));
-            $output = json_decode(ob_get_clean());
-            http_response_code(200);
-            if (is_array($output) || is_object($output)) {
-                if (property_exists($output, 'view')) {
-                    // If the output is a view, render the view
-                    view($output->view, $output->data ?? [], $output->path);
+            $result = call_user_func($handler, $params);
+            ob_end_clean();
+            if (!headers_sent()) {
+                http_response_code(200);
+            }
+            if (is_array($result) || is_object($result)) {
+                if (is_object($result) && property_exists($result, 'view')) {
+                    // If the result is a view, render the view
+                    view($result->view, $result->data ?? [], $result->path);
                 } else {
-                    // If the output is an array or object, convert it to JSON and echo it
-                    header('Content-Type: application/json');
-                    echo json_encode($output);
+                    // If the result is an array or object, convert it to JSON and echo it
+                    if (!headers_sent()) {
+                        header('Content-Type: application/json');
+                    }
+                    echo json_encode($result);
                 }
             } else {
-                // If not an array or object, simply echo the output
-                echo $output;
+                // If not an array or object, simply echo the result
+                echo $result;
             }
         } else {
             // Handle error: invalid handler
