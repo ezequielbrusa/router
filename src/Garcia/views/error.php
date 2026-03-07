@@ -1,3 +1,3 @@
 <?php
 
-echo "IMPORTANT: {$message}";
+echo "IMPORTANT: " . htmlspecialchars((string)$message, ENT_QUOTES, 'UTF-8');

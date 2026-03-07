@@ -5,20 +5,26 @@ namespace Test\Unit;
 use Garcia\Router;
 use PHPUnit\Framework\TestCase;
 
-class Test {
-    public function index(){
+class Test
+{
+    public function index()
+    {
         return ['Hello' => 'index'];
     }
-    public function store(){
+    public function store()
+    {
         return ['Hello' => 'store'];
     }
-    public function show(){
+    public function show()
+    {
         return ['Hello' => 'show'];
     }
-    public function update($params){
-        return ['Hello' => "update".$params['id']];
+    public function update($params)
+    {
+        return ['Hello' => "update" . $params['id']];
     }
-    public function destroy(){
+    public function destroy()
+    {
         return ['Hello' => 'destroy'];
     }
 }
@@ -71,6 +77,84 @@ class RouterTest extends TestCase
     }
 
     /** @test - Test if the route is added to the routes array */
+    public function addResource()
+    {
+        Router::resource('/tests', Test::class);
+        $this->assertIsArray(Router::getRoutes());
+        $this->assertCount(11, Router::getRoutes());
+    }
+
+    /** @test - error.php must HTML-encode the $message variable */
+    public function testErrorViewEscapesXss()
+    {
+        $message = '<script>alert("xss")</script>';
+        ob_start();
+        view('error', ['message' => $message], __DIR__ . '/../../src/Garcia/views');
+        $output = ob_get_clean();
+
+        $this->assertStringNotContainsString('<script>', $output);
+        $this->assertStringContainsString('&lt;script&gt;', $output);
+    }
+
+    /** @test - template.php must HTML-encode the $name variable */
+    public function testTemplateViewEscapesXss()
+    {
+        $name = '<script>alert("xss")</script>';
+        ob_start();
+        view('template', ['name' => $name], __DIR__ . '/../../src/Garcia/views');
+        $output = ob_get_clean();
+
+        $this->assertStringNotContainsString('<script>', $output);
+        $this->assertStringContainsString('&lt;script&gt;', $output);
+    }
+
+    /** @test - views must encode double quotes to prevent attribute injection (validates ENT_QUOTES) */
+    public function testViewsEscapeQuotes()
+    {
+        $payload = '" onmouseover="alert(1)"';
+
+        ob_start();
+        view('error', ['message' => $payload], __DIR__ . '/../../src/Garcia/views');
+        $errorOutput = ob_get_clean();
+
+        ob_start();
+        view('template', ['name' => $payload], __DIR__ . '/../../src/Garcia/views');
+        $templateOutput = ob_get_clean();
+
+        $this->assertStringContainsString('&quot;', $errorOutput);
+        $this->assertStringContainsString('&quot;', $templateOutput);
+    }
+
+    /** @test - views must handle empty string input without errors */
+    public function testViewsHandleEmptyStrings()
+    {
+        ob_start();
+        view('error', ['message' => ''], __DIR__ . '/../../src/Garcia/views');
+        $errorOutput = ob_get_clean();
+
+        ob_start();
+        view('template', ['name' => ''], __DIR__ . '/../../src/Garcia/views');
+        $templateOutput = ob_get_clean();
+
+        $this->assertStringContainsString('IMPORTANT: ', $errorOutput);
+        $this->assertStringContainsString('Hello, !', $templateOutput);
+    }
+
+    /** @test - views must handle null input safely by rendering an empty string */
+    public function testViewsHandleNullSafely()
+    {
+        ob_start();
+        view('error', ['message' => null], __DIR__ . '/../../src/Garcia/views');
+        $errorOutput = ob_get_clean();
+
+        ob_start();
+        view('template', ['name' => null], __DIR__ . '/../../src/Garcia/views');
+        $templateOutput = ob_get_clean();
+
+        $this->assertStringContainsString('IMPORTANT: ', $errorOutput);
+        $this->assertStringContainsString('Hello, !', $templateOutput);
+    }
+}
      public function addResource()
 
      {

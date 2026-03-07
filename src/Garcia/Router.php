@@ -30,35 +30,35 @@ class Router
     }
 
     public function middleware(callable $middleware)
-    { 
-        foreach(self::$routes as $idx => $route) {
+    {
+        foreach (self::$routes as $idx => $route) {
             if (isset(self::$routes[$idx])) {
-                self::$routes[$idx]['middleware'][] = $middleware;                
+                self::$routes[$idx]['middleware'][] = $middleware;
             }
         }
-        
+
         return $this;
     }
 
 
-   /**
-    * This method sets multiple routes such a Get, Post, Patch, Put, Delete and sets the corresponding callbacks
-    * Based on restful controllers.
-    *
-    * @param string $path - URL path 
-    * @param string $className - This is the name of the class that we use instantiate callbacks
-    */
+    /**
+     * This method sets multiple routes such a Get, Post, Patch, Put, Delete and sets the corresponding callbacks
+     * Based on restful controllers.
+     *
+     * @param string $path - URL path
+     * @param string $className - This is the name of the class that we use instantiate callbacks
+     */
     public static function resource(string $path, string $className)
     {
-        self::addRoute('GET', $path, fn () => (new $className)->index());
-        self::addRoute('POST', $path, fn ($params) => (new $className)->store($params));
-        self::addRoute('GET', "$path/:id", fn ($params) => (new $className)->show($params));
-        self::addRoute('PATCH', "$path/:id", fn ($params) => (new $className)->update($params));
-        self::addRoute('PUT', "$path/:id", fn ($params) => (new $className)->update($params));
-        self::addRoute('DELETE', "$path/:id", fn ($params) => (new $className)->destroy($params));
-        return new static;
+        self::addRoute('GET', $path, fn () => (new $className())->index());
+        self::addRoute('POST', $path, fn ($params) => (new $className())->store($params));
+        self::addRoute('GET', "$path/:id", fn ($params) => (new $className())->show($params));
+        self::addRoute('PATCH', "$path/:id", fn ($params) => (new $className())->update($params));
+        self::addRoute('PUT', "$path/:id", fn ($params) => (new $className())->update($params));
+        self::addRoute('DELETE', "$path/:id", fn ($params) => (new $className())->destroy($params));
+        return new static();
     }
-     
+
     /**
      * Sets a new route for GET requests.
      *
@@ -69,7 +69,7 @@ class Router
     public static function get(string $path, callable $handler)
     {
         self::addRoute('GET', $path, $handler);
-        return new static;
+        return new static();
     }
 
     /**
@@ -82,7 +82,7 @@ class Router
     public static function post(string $path, callable $handler)
     {
         self::addRoute('POST', $path, $handler);
-        return new static;
+        return new static();
     }
 
     /**
@@ -95,7 +95,7 @@ class Router
     public static function put(string $path, callable $handler)
     {
         self::addRoute('PUT', $path, $handler);
-        return new static;
+        return new static();
     }
 
     /**
@@ -108,8 +108,7 @@ class Router
     public static function delete(string $path, callable $handler)
     {
         self::addRoute('DELETE', $path, $handler);
-        return new static;
-
+        return new static();
     }
 
     /**
@@ -122,8 +121,7 @@ class Router
     public static function patch(string $path, callable $handler)
     {
         self::addRoute('PATCH', $path, $handler);
-        return new static;
-
+        return new static();
     }
 
     /**
@@ -136,8 +134,7 @@ class Router
     public static function options(string $path, callable $handler)
     {
         self::addRoute('OPTIONS', $path, $handler);
-        return new static;
-
+        return new static();
     }
 
     /**
@@ -155,8 +152,7 @@ class Router
         self::addRoute('DELETE', $path, $handler);
         self::addRoute('PATCH', $path, $handler);
         self::addRoute('OPTIONS', $path, $handler);
-        return new static;
-
+        return new static();
     }
 
     /**
@@ -282,27 +278,27 @@ class Router
      */
     public static function run()
     {
-       $method = $_SERVER['REQUEST_METHOD'];
-       $uri = $_SERVER['REQUEST_URI'];
+        $method = $_SERVER['REQUEST_METHOD'];
+        $uri = $_SERVER['REQUEST_URI'];
 
-       self::handleMiddleware($method, $uri);
+        self::handleMiddleware($method, $uri);
 
-       // Handle the request
-       self::handleRequest($method, $uri);
+        // Handle the request
+        self::handleRequest($method, $uri);
     }
 
     public static function handleMiddleware(string $method, string $uri)
     {
         $params = [];
         foreach (self::$routes as $idx => $route) {
-            if ($route['method'] === $method && self::matchPath($route['path'], $uri, $params)) { 
-                 $middlewareCount = count(self::$routes[$idx]['middleware']) - 1;
+            if ($route['method'] === $method && self::matchPath($route['path'], $uri, $params)) {
+                $middlewareCount = count(self::$routes[$idx]['middleware']) - 1;
 
-                 for ($x = 0; $x <= $middlewareCount; $x++) {
+                for ($x = 0; $x <= $middlewareCount; $x++) {
                     self::$routes[$idx]['middleware'][$x]();
-                 }
-             }
-         }
+                }
+            }
+        }
     }
 
     /**

@@ -36,20 +36,26 @@ Router::post('/health', fn ($params) => "Hello, {$params['name']} {$params['last
 Router::get('/redirect', fn () => redirect('https://www.example.com'));
 
 // Example of using the resource method
-class Test {
-    public function index(){
+class Test
+{
+    public function index()
+    {
         return ['Hello' => 'index'];
     }
-    public function store(){
+    public function store()
+    {
         return ['Hello' => 'store'];
     }
-    public function show(){
+    public function show()
+    {
         return ['Hello' => 'show'];
     }
-    public function update($params){
+    public function update($params)
+    {
         return ['Hello' => "update".$params['id']];
     }
-    public function destroy(){
+    public function destroy()
+    {
         return ['Hello' => 'destroy'];
     }
 }
